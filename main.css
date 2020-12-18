@@ -1,0 +1,21 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+:root {
+  --background-pale: #FEF6E3;
+  --pale-blue: #DEEBFF;
+  --font-cursive: 'Sacramento', cursive;
+  --font-serif: 'Sahitya', serif;
+  --font-chunky: 'Rowdies', cursive;
+
+  --max-width: 1200px;
+}
+
+body {
+  margin: 0;
+}

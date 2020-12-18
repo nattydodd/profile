@@ -1,0 +1,58 @@
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.profile-hero {
+  background: var(--background-pale);
+}
+
+.inner {
+  height: 85vh;
+  max-width: var(--max-width);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#canvas {
+  position: absolute;
+}
+
+.background-name {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  padding: 50px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0px;
+  z-index: 0;
+}
+
+.background-name__letter {
+  font-family: var(--font-chunky);
+  font-size: 80px;
+  color: var(--pale-blue);
+  display: flex;
+  justify-content: center;
+}
+
+h1, h2 {
+  margin: 0;
+  z-index: 1;
+}
+
+h1 {
+  font-size: 64px;
+  font-weight: 400;
+  font-family: var(--font-cursive);
+}
+
+h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 18px;
+}
