@@ -6,17 +6,6 @@ template.innerHTML = `
     <div class="inner">
       <canvas id="canvas"></canvas>
       <div class="background-name">
-        <div class="background-name__letter">N</div>
-        <div class="background-name__letter">A</div>
-        <div class="background-name__letter">T</div>
-        <div class="background-name__letter">A</div>
-        <div class="background-name__letter">L</div>
-        <div class="background-name__letter">I</div>
-        <div class="background-name__letter">E</div>
-        <div class="background-name__letter">D</div>
-        <div class="background-name__letter">O</div>
-        <div class="background-name__letter">D</div>
-        <div class="background-name__letter">D</div>
       </div>
       <h1></h1>
       <h2></h2>
@@ -28,12 +17,22 @@ class ProfileHero extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' })
-    this.shadowRoot.appendChild(style)
-    this.shadowRoot.appendChild(template.content.cloneNode(true))
+    const root = this.shadowRoot;
+    root.appendChild(style)
+    root.appendChild(template.content.cloneNode(true))
     this.name = this.getAttribute('name')
     this.title = this.getAttribute('title')
-    this.shadowRoot.querySelector('h1').innerText = this.name
-    this.shadowRoot.querySelector('h2').innerText = this.title
+    root.querySelector('h1').innerText = this.name
+    root.querySelector('h2').innerText = this.title
+    let backgroundName = this.name.split(' ')
+    backgroundName = backgroundName[0].concat(backgroundName[1]).split('')
+    backgroundName.forEach(letter => {
+      const wrapper = root.querySelectorAll('.background-name')[0]
+      const letterEl = document.createElement('div')
+      letterEl.classList.add('background-name__letter')
+      letterEl.innerText = letter.toUpperCase();
+      wrapper.appendChild(letterEl) 
+    })
   }
 
   connectedCallback() {
@@ -47,11 +46,11 @@ class ProfileHero extends HTMLElement {
 
   drawLines() {
     this.animateLine('#56CCF2', [{ x: 0, y: 200 }, { x: 100, y: 100 }])
-    this.animateLine('#EB5757', [{ x: 0, y: 300 }, { x: 100, y: 200 }])
+    this.animateLine('#EB5757', [{ x: 0, y: 300 }, { x: 100, y: 200 }], 1000)
     this.animateLine('#F2AF02', [{ x: 0, y: 400 }, { x: 100, y: 300 }])
-    this.animateLine('#F2AF02', [{ x: 250, y: 0 }, { x: 100, y: 150 }])
+    this.animateLine('#F2AF02', [{ x: 250, y: 0 }, { x: 100, y: 150 }], 500)
     this.animateLine('#56CCF2', [{ x: 375, y: 0 }, { x: 250, y: 150 }])
-    this.animateLine('#EB5757', [{ x: 375, y: 100 }, { x: 250, y: 250 }])
+    this.animateLine('#EB5757', [{ x: 375, y: 100 }, { x: 250, y: 250 }], 1500)
   }
 
   calcPath(vertices) {
@@ -71,13 +70,13 @@ class ProfileHero extends HTMLElement {
     return path;
   }
 
-  animateLine(color, vertices) {
+  animateLine(color, vertices, delay = 0) {
     let t = 1;
     const animate = (points, color) => {
       const canvas = this.shadowRoot.getElementById('canvas');
       let ctx = canvas.getContext('2d')
       if (t < points.length - 1) {
-        const callback = (timestamp) => animate(points, color);
+        const callback = (timestamp) => animate(points, color)
         requestAnimationFrame(callback);
       }
       // draw a line segment from the last waypoint
@@ -95,7 +94,12 @@ class ProfileHero extends HTMLElement {
     }
 
     const points = this.calcPath(vertices)
-    animate(points, color);
+
+    if (delay) {
+      setTimeout(() => animate(points, color), delay)
+    } else {
+      animate(points, color);
+    }
   }
 }
 
