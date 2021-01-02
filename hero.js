@@ -46,11 +46,11 @@ class ProfileHero extends HTMLElement {
 
   drawLines() {
     this.animateLine('#56CCF2', [{ x: 0, y: 200 }, { x: 100, y: 100 }])
-    this.animateLine('#EB5757', [{ x: 0, y: 300 }, { x: 100, y: 200 }], 1000)
+    this.animateLine('#EB5757', [{ x: 0, y: 300 }, { x: 100, y: 200 }], 500)
     this.animateLine('#F2AF02', [{ x: 0, y: 400 }, { x: 100, y: 300 }])
-    this.animateLine('#F2AF02', [{ x: 250, y: 0 }, { x: 100, y: 150 }], 500)
+    this.animateLine('#F2AF02', [{ x: 250, y: 0 }, { x: 100, y: 150 }], 250)
     this.animateLine('#56CCF2', [{ x: 375, y: 0 }, { x: 250, y: 150 }])
-    this.animateLine('#EB5757', [{ x: 375, y: 100 }, { x: 250, y: 250 }], 1500)
+    this.animateLine('#EB5757', [{ x: 375, y: 100 }, { x: 250, y: 250 }], 750)
   }
 
   calcPath(vertices) {
@@ -60,10 +60,10 @@ class ProfileHero extends HTMLElement {
         var pt1 = vertices[i];
         var dx = pt1.x - pt0.x;
         var dy = pt1.y - pt0.y;
-        for (var j = 0; j < 100; j++) {
+        for (var j = 0; j < 50; j++) {
           path.push({
-              x: pt0.x + dx * j / 100,
-              y: pt0.y + dy * j / 100
+              x: pt0.x + dx * j / 50,
+              y: pt0.y + dy * j / 50
           });
         }
     }

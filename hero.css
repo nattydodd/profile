@@ -49,10 +49,49 @@ h1 {
   font-size: 64px;
   font-weight: 400;
   font-family: var(--font-cursive);
+  animation: 
+    slideup 1s,
+    fadeIn 1s ease-in;
 }
 
 h2 {
   font-family: var(--font-serif);
   font-weight: 400;
   font-size: 18px;
+  animation: 
+    slideup 1s .25s,
+    fadeInDelay ease-in .75s;
+}
+
+@keyframes slideup {
+  0% {
+    transform: translate(0, 150px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDelay {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
