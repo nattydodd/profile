@@ -18,6 +18,7 @@ template.innerHTML = `
 class ProfileHero extends HTMLElement {
   constructor() {
     super();
+    this.lines = [];
     this.attachShadow({ mode: 'open' })
     const root = this.shadowRoot;
     root.appendChild(style)
@@ -32,17 +33,41 @@ class ProfileHero extends HTMLElement {
       const letterEl = document.createElement('div')
       letterEl.classList.add('background-name__letter')
       letterEl.innerText = letter.toUpperCase();
-      wrapper.appendChild(letterEl) 
+      wrapper.appendChild(letterEl)
+      letterEl.addEventListener('mouseover', (e) => { 
+        letterEl.classList.add('skew')
+       }) 
+      letterEl.addEventListener('mouseout', (e) => { 
+        setTimeout(() => { letterEl.classList.remove('skew') }, 1000)
+       }) 
     })
   }
 
   connectedCallback() {
     document.addEventListener('DOMContentLoaded', () => {
       let canvas = this.shadowRoot.getElementById('canvas');
+      let ctx = canvas.getContext('2d')
       const backgroundArea = this.shadowRoot.getElementById('canvas-ref');
       canvas.width = backgroundArea.getBoundingClientRect().width;
       canvas.height = backgroundArea.getBoundingClientRect().height;
       this.drawLines()
+      backgroundArea.addEventListener('mousemove', (e) => {
+        this.lines.forEach(line => {
+          let path = new Path2D();
+          path.moveTo(line.start.x, line.start.y);
+          path.lineTo(line.end.x, line.end.y);
+          ctx.strokeStyle = 'transparent'
+          ctx.stroke(path);
+          // TODO: clientX and clientY only works on mobile
+          if (ctx.isPointInStroke(path, e.clientX, e.clientY)) {
+            let path2 = new Path2D();
+            ctx.strokeStyle = 'red'
+            ctx.beginPath();
+            path2.bezierCurveTo(line.end.x, line.end.y, line.end.x / 2, line.end.y / 2, line.start.x, line.start.y)
+            ctx.stroke(path2);
+          }
+        })
+      });
     })
   }
 
@@ -57,7 +82,7 @@ class ProfileHero extends HTMLElement {
     this.animateLine(blue, [{ x: 0, y: 0.30 * canvasHeight }, { x: 0.27 * canvasWidth, y: 0.15 * canvasHeight }])
     this.animateLine(red, [{ x: 0, y: 0.45 * canvasHeight }, { x: 0.27 * canvasWidth, y: 0.30 * canvasHeight }], 500)
     this.animateLine(yellow, [{ x: 0, y: 0.60 * canvasHeight }, { x: 0.27 * canvasWidth, y: 0.45 * canvasHeight }])
-    
+
     this.animateLine(yellow, [{ x: 0.67 * canvasWidth, y: 0 }, { x: 0.27 * canvasWidth, y: 0.23 * canvasHeight }], 250)
     this.animateLine(blue, [{ x: canvasWidth, y: 0 }, { x: 0.67 * canvasWidth, y: 0.23 * canvasHeight }])
     this.animateLine(red, [{ x: 1.26 * canvasWidth, y: 0 }, { x: 0.67 * canvasWidth, y: 0.38 * canvasHeight }], 500)
@@ -76,8 +101,8 @@ class ProfileHero extends HTMLElement {
         var dy = pt1.y - pt0.y;
         for (var j = 0; j < 50; j++) {
           path.push({
-              x: pt0.x + dx * j / 50,
-              y: pt0.y + dy * j / 50
+            x: pt0.x + dx * j / 50,
+            y: pt0.y + dy * j / 50
           });
         }
     }
@@ -96,18 +121,24 @@ class ProfileHero extends HTMLElement {
       // draw a line segment from the last waypoint
       // to the current waypoint
       if (points[t]) {
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 2.5;
         ctx.lineCap = 'round';
         ctx.strokeStyle = color;
         ctx.beginPath();
         ctx.moveTo(points[t - 1].x, points[t - 1].y);
         ctx.lineTo(points[t].x, points[t].y);
+        // TODO: use sine wave
+        // ctx.bezierCurveTo(60, 37, 70, 25, points[t].x, points[t].y);
         ctx.stroke();
         t += 1;
       }
     }
 
     const points = this.calcPath(vertices)
+    this.lines.push({ 
+      start: vertices[0], 
+      end: vertices[1]
+    })
 
     if (delay) {
       setTimeout(() => animate(points, color), delay)
