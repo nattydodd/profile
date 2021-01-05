@@ -25,11 +25,27 @@
   position: absolute;
   height: 100%;
   width: 100%;
-  padding: 50px;
+  padding: 50px 50px 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0px;
   z-index: 0;
+}
+
+.foreground-name {
+  top: calc(50% + 25px); 
+  position: absolute;
+  text-align: center;
+}
+
+@media (min-width: 800px) {
+  .background-name {
+    padding: 70px 50px 0;
+  }
+
+  .foreground-name {
+    top: calc(50% + 35px); 
+  }
 }
 
 .background-name__letter {
@@ -47,6 +63,7 @@ h1, h2 {
 
 h1 {
   font-size: 64px;
+  line-height: 74px;
   font-weight: 400;
   font-family: var(--font-cursive);
   animation: 

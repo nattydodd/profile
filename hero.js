@@ -5,10 +5,12 @@ template.innerHTML = `
   <div class="profile-hero">
     <div class="inner">
       <canvas id="canvas"></canvas>
-      <div class="background-name">
+      <div class="background-name" id="canvas-ref">
       </div>
-      <h1></h1>
-      <h2></h2>
+      <div class="foreground-name">
+        <h1></h1>
+        <h2></h2>
+      <div>
     </div>
   </div>
 `
@@ -24,8 +26,7 @@ class ProfileHero extends HTMLElement {
     this.title = this.getAttribute('title')
     root.querySelector('h1').innerText = this.name
     root.querySelector('h2').innerText = this.title
-    let backgroundName = this.name.split(' ')
-    backgroundName = backgroundName[0].concat(backgroundName[1]).split('')
+    let backgroundName = this.name.split('')
     backgroundName.forEach(letter => {
       const wrapper = root.querySelectorAll('.background-name')[0]
       const letterEl = document.createElement('div')
@@ -38,19 +39,32 @@ class ProfileHero extends HTMLElement {
   connectedCallback() {
     document.addEventListener('DOMContentLoaded', () => {
       let canvas = this.shadowRoot.getElementById('canvas');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const backgroundArea = this.shadowRoot.getElementById('canvas-ref');
+      canvas.width = backgroundArea.getBoundingClientRect().width;
+      canvas.height = backgroundArea.getBoundingClientRect().height;
       this.drawLines()
     })
   }
 
   drawLines() {
-    this.animateLine('#56CCF2', [{ x: 0, y: 200 }, { x: 100, y: 100 }])
-    this.animateLine('#EB5757', [{ x: 0, y: 300 }, { x: 100, y: 200 }], 500)
-    this.animateLine('#F2AF02', [{ x: 0, y: 400 }, { x: 100, y: 300 }])
-    this.animateLine('#F2AF02', [{ x: 250, y: 0 }, { x: 100, y: 150 }], 250)
-    this.animateLine('#56CCF2', [{ x: 375, y: 0 }, { x: 250, y: 150 }])
-    this.animateLine('#EB5757', [{ x: 375, y: 100 }, { x: 250, y: 250 }], 750)
+    let canvas = this.shadowRoot.getElementById('canvas');
+    const canvasWidth = canvas.getBoundingClientRect().width;
+    const canvasHeight = canvas.getBoundingClientRect().height;
+    const blue = '#56CCF2';
+    const red = '#EB5757';
+    const yellow = '#F2AF02';
+
+    this.animateLine(blue, [{ x: 0, y: 0.30 * canvasHeight }, { x: 0.27 * canvasWidth, y: 0.15 * canvasHeight }])
+    this.animateLine(red, [{ x: 0, y: 0.45 * canvasHeight }, { x: 0.27 * canvasWidth, y: 0.30 * canvasHeight }], 500)
+    this.animateLine(yellow, [{ x: 0, y: 0.60 * canvasHeight }, { x: 0.27 * canvasWidth, y: 0.45 * canvasHeight }])
+    
+    this.animateLine(yellow, [{ x: 0.67 * canvasWidth, y: 0 }, { x: 0.27 * canvasWidth, y: 0.23 * canvasHeight }], 250)
+    this.animateLine(blue, [{ x: canvasWidth, y: 0 }, { x: 0.67 * canvasWidth, y: 0.23 * canvasHeight }])
+    this.animateLine(red, [{ x: 1.26 * canvasWidth, y: 0 }, { x: 0.67 * canvasWidth, y: 0.38 * canvasHeight }], 500)
+
+    this.animateLine(blue, [{ x: 0.8 * canvasWidth, y: canvasHeight }, { x: 0.57 * canvasWidth, y: 0.65 * canvasHeight }], 150)
+    this.animateLine(red, [{ x: 0.6 * canvasWidth, y: canvasHeight }, { x: 0.50 * canvasWidth, y: 0.85 * canvasHeight }], 250)
+    this.animateLine(yellow, [{ x: canvasWidth, y: canvasHeight }, { x: 0.82 * canvasWidth, y: 0.75 * canvasHeight }], 200)
   }
 
   calcPath(vertices) {
