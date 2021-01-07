@@ -4,9 +4,11 @@
 
 .profile-hero {
   background: var(--background-pale);
+  background-image: url('./abstract-geometric-pattern-background_1319-242.jpg');
 }
 
 .inner {
+  background: var(--background-pale);
   height: 95vh;
   max-width: var(--max-width);
   margin: auto;
@@ -15,6 +17,20 @@
   align-items: center;
   justify-content: center;
   position: relative;
+}
+
+.profile-hero::after {
+  background: linear-gradient(-45deg, #ffffff 16px, transparent 0), linear-gradient(45deg, #ffffff 16px, transparent 0);
+  background-position: left-bottom;
+  background-repeat: repeat-x;
+  background-size: 32px 32px;
+  content: " ";
+  display: block;
+  position: absolute;
+  bottom: 5vh;
+  left: 0px;
+  width: 100%;
+  height: 32px;
 }
 
 #canvas {

@@ -18,7 +18,6 @@ template.innerHTML = `
 class ProfileHero extends HTMLElement {
   constructor() {
     super();
-    this.lines = [];
     this.attachShadow({ mode: 'open' })
     const root = this.shadowRoot;
     root.appendChild(style)
@@ -46,28 +45,10 @@ class ProfileHero extends HTMLElement {
   connectedCallback() {
     document.addEventListener('DOMContentLoaded', () => {
       let canvas = this.shadowRoot.getElementById('canvas');
-      let ctx = canvas.getContext('2d')
       const backgroundArea = this.shadowRoot.getElementById('canvas-ref');
       canvas.width = backgroundArea.getBoundingClientRect().width;
       canvas.height = backgroundArea.getBoundingClientRect().height;
-      this.drawLines()
-      backgroundArea.addEventListener('mousemove', (e) => {
-        this.lines.forEach(line => {
-          let path = new Path2D();
-          path.moveTo(line.start.x, line.start.y);
-          path.lineTo(line.end.x, line.end.y);
-          ctx.strokeStyle = 'transparent'
-          ctx.stroke(path);
-          // TODO: clientX and clientY only works on mobile
-          if (ctx.isPointInStroke(path, e.clientX, e.clientY)) {
-            let path2 = new Path2D();
-            ctx.strokeStyle = 'red'
-            ctx.beginPath();
-            path2.bezierCurveTo(line.end.x, line.end.y, line.end.x / 2, line.end.y / 2, line.start.x, line.start.y)
-            ctx.stroke(path2);
-          }
-        })
-      });
+      this.drawLines();
     })
   }
 
@@ -116,7 +97,7 @@ class ProfileHero extends HTMLElement {
       let ctx = canvas.getContext('2d')
       if (t < points.length - 1) {
         const callback = (timestamp) => animate(points, color)
-        requestAnimationFrame(callback);
+        requestAnimationFrame(callback);  
       }
       // draw a line segment from the last waypoint
       // to the current waypoint
@@ -127,18 +108,12 @@ class ProfileHero extends HTMLElement {
         ctx.beginPath();
         ctx.moveTo(points[t - 1].x, points[t - 1].y);
         ctx.lineTo(points[t].x, points[t].y);
-        // TODO: use sine wave
-        // ctx.bezierCurveTo(60, 37, 70, 25, points[t].x, points[t].y);
         ctx.stroke();
         t += 1;
       }
     }
 
     const points = this.calcPath(vertices)
-    this.lines.push({ 
-      start: vertices[0], 
-      end: vertices[1]
-    })
 
     if (delay) {
       setTimeout(() => animate(points, color), delay)
