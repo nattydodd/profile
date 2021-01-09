@@ -1,0 +1,14 @@
+{
+  "name": "profile",
+  "version": "1.0.0",
+  "main": "main.js",
+  "repository": "git@github.com:nattydodd/profile.git",
+  "author": "Natalie Dodd <nataliedodd89@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify-css": "^0.15.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.20"
+  }
+}

@@ -1,0 +1,48 @@
+.profile-about {
+  height: 100vh;
+}
+
+.inner {
+  max-width: var(--max-width);
+  margin: auto;
+  padding: 100px;
+  display: flex;
+  flex-direction: column;
+}
+
+.text {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 20px;
+  opacity: 0;
+  transition: 
+    transform .5s ease-in,
+    opacity .5s ease-in;
+}
+
+.text.visible {
+  transform: translateX(100px);
+  opacity: 1;
+}
+
+#image1 {
+  margin-top: 50px;
+  width: 300px;
+  height: auto;
+  border-radius: 4px;
+  opacity: 0;
+  transition: 
+    transform .5s ease-in,
+    opacity .5s ease-in;
+}
+
+#image1.visible {
+  transform: translateX(-100px);
+  opacity: 1;
+}
+
+.image-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
